@@ -1,0 +1,8 @@
+*.log
+*.aux
+*.vrb
+*.out
+_minted-CppCheatSheet/*
+CppCheatSandbox
+file.txt
+gnuplotFile.txt

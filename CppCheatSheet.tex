@@ -1,0 +1,379 @@
+\documentclass[12pt]{article}
+\usepackage{dsfont}
+\usepackage{minted}
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[cm]{fullpage}
+\usepackage{layout}
+\usepackage[dvipsnames]{xcolor}
+\lstset{language=C++,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{CadetBlue}\ttfamily,
+  morecomment=[l][\color{magenta}]{\#}
+}
+
+\begin{document}
+\title{C++ cheat sheet}
+\author{Daniel Huantes}
+\maketitle
+\section{Introduction}
+
+\section{Basics}
+  \subsection{Starting}
+    \begin{itemize}
+      \item All C++ files need to be saved in a file ending in .cpp
+      \item All 'header' files, or files containing information
+      including class definitions and function definitions should be
+      stored in .hpp or .h files.
+      \item Header files should include ONE class definition per, with
+      the class sharing the name of the file (minus the .hpp)
+      \item C++ files need a method named 'main' in order to
+      execute. The compiler looks for a method with this name and
+      begins executing from its first line, NOT the first line of the
+      file like in python
+    \end{itemize}
+  \subsection{Including}
+    \begin{lstlisting}
+      //equivalent to importing in python
+      \#include </*libraryName*/>
+      \#include </*path/to/file.hpp*/>
+      \#include "/*local header file*/"
+
+      \#include <set>
+      \#include <map>
+      \#include <cmath>
+      \#include <chrono>
+      \#include <vector>
+      \#include <iostream>
+      \#include <libField/Field.hpp>
+      \#include <libInterpolate/Interpolate.hpp>
+      \#include "geometry.h"
+
+    \end{lstlisting}
+  \subsection{Common Type Declarations}
+    \begin{lstlisting}
+      // decimal numbers
+      double a  = 321.044; 
+      float b = 1.21;
+      //whole numbers
+      int c     = 45;
+      long d = 323e7;  
+      // true/false
+      bool d = true;
+      bool d = 3 < 4;
+      // strings
+      std::string words = "blah blah blah";
+      std::string more_words = "foo bar BAZ!"
+    \end{lstlisting}
+  \subsection{Common Functions}
+    \begin{lstlisting}
+      // printing
+      std::cout << "Don't forget the newline!" << "\n";
+      std::cout << "This is fine as well!\n";
+      std::cout << "Now " << "you're " << "being " << "ridiculous\n";
+      std::cout << "numbers: {" << 1 << ", " << 0.243 << "}\n";
+      // to string
+      float b = 1.21;
+      std::string interp = std::to_string(b) + " look at that!\n";
+      // mathy stuff
+      // these are non-native and are included in cmath
+      // pow takes two arguments, x and y and returns x^y
+      double IV = pow(25, 2);
+      // the log function is natural log, or ln. If you want log base
+      // 10 reevaluate your life
+      double natural = log(0.5);
+      // the square root or sqrt function will always give the
+      // positive root
+      double irrational = sqrt(2);
+    \end{lstlisting}
+  \subsection{Common Structure syntax}
+    \begin{lstlisting}
+      for(/*declaration*/; /*test*/; /*increment/increase*/){
+         // do something 10 times 
+      }
+      for(int i = 0; i < 10; i++){
+         // do something N times 
+      }
+      if(/*conditional*/){
+        //do if conditional is true
+      }
+      a = 1;
+      if(a < 2){
+        //do this if conditional is true
+      } else {
+        //do this if conditional ISN'T true
+      }
+      while(/*conditional*/){
+        // repeat this until conditional is false
+      }
+      int n = 0;
+      while(n < 10){
+        // do this over and over
+        n++;
+      }
+    \end{lstlisting}
+  \subsection{Compiling (running)}
+      in python compiling/running are interchangable, not in C++
+      C++ 'compiles' source code (human language) and sends it 
+      to 'machine code' (binary) that is stored in an
+      unreadable, but executable file
+
+      run the following in the command line to compile (replace
+      FILENAME with your file's name)
+      \begin{minted}{bash}
+        \$ g++ FILENAME.cpp -o FILENAME
+      \end{minted}
+      
+      this will generate a file called FILENAME that is executable and
+      can be run using
+      \begin{minted}{bash}
+        \$ ./FILENAME
+      \end{minted}
+
+\section{Slightly-less-basics}
+  \subsection{Writing to file}
+    \begin{lstlisting}
+      ofstream output;
+      output.open("./path/to/file.txt");
+      output << /*Some string or writable thing*/;
+      output.close();
+    \end{lstlisting}
+  \subsection{Plotting}
+    \begin{lstlisting}
+      ofstream output;
+      output.open("./path/to/file.txt");
+      //gnuplot style is 'x y' columns
+      output << /*Something gnuplot style*/;
+      output.close();
+      // -e is the commandline tack, and -p is the
+      // 'persist' command so it doesn't get destroyed
+      system("gnuplot -p -e \'plot \"gnuplotFile.txt\" with lines \'");
+      
+      //example of y = x^2
+      double dx = 0.2;
+      std::string buffer = "";
+      std::string x, y;
+      for(int i = 0; i < 100; i++){
+        x = std::to_string(i * dx);
+        y = std::to_string(pow(i * dx, 2));
+        buffer +=  x + "\t" + y + "\n";
+      }
+      ofstream output;
+      output.open("gnuplotFile.txt");
+      //gnuplot style is 'x y' columns
+      output << buffer;
+      output.close();
+      // -e is the commandline tack, and -p is the
+      // 'persist' command so it doesn't get destroyed
+      system("gnuplot -p -e \'plot \"gnuplotFile.txt\" with lines \'");
+    \end{lstlisting}
+  \subsection{Function Declaration syntax}
+    \begin{lstlisting}
+      /*return type*/ /*unique name*/(/*parameters*/){
+        // body of function declaration, any math manipulations or
+        algorithms go here. Any function with a return type not void
+        must have a return statement
+      }
+      double sum_squared(double x, double y){
+        return (x + y) * (x + y);
+      }
+    \end{lstlisting}
+  \subsection{Class Declaration syntax}
+    \begin{lstlisting}
+      //best practice is to have one class definition per header file
+      class /*Name*/{
+        public:
+          // constructors, public functions, etc
+        protected:
+          // usable by subclasses
+        private:
+          // not directly accessible outside of class definition
+      };
+      // example class for an app to manage Jimmy John's orders
+      class Sandwich{
+        public:
+          // constructors are special 'creation' functions so they
+          // share the class name and do not have a return type
+          Sandwich(){
+          
+          }
+          Sandwich(int menuNumber){
+            if(menuNumber > 17){
+              menuID = -1;
+            } else {
+              menuID = menuNumber;
+            }
+          }
+          string printDescription(){
+            return descriptions[menuID - 1];
+          }
+        protected:
+          boolean mayo = True;
+          boolean lettuce = True;
+          boolean tomato = True;
+          boolean peppers = False;
+        private:
+          int menuID;
+          string descriptions[] = {/*too lazy to actually type this*/};
+      }
+    \end{lstlisting}
+\section{Even-more-less basic}
+  \subsection{Container Declarations}
+    \begin{lstlisting}
+      /*type*/ /*name*/[/*number*/];
+      /*type*/ /*name*/[/*number*/] = {/*same \# of elements*/};
+      /*type*/ /*name*/[] = {/*any \# of elements*/};
+      double x\_values[n];
+      double t\_values[100];
+      double ages[3] = {34, 23, 17};
+      string names[] = {"Emily", "Dan", "Patrick"};
+
+      std::vector</*typename*/> /*name*/;
+      std::vector<int> fibbonacci;
+      std::vector<int> threes{3, 3, 3};
+      std::vector<n, 1> zeros;
+      std::vector<n, 0> ones;
+
+      std::map</*give this type*/, /*get that type*/> /*name*/;
+      std::map<int, string> MenuDescriptions = {{1, "THE PEPE: Ham and
+      Provolone..."}, 
+      {2 "Big John: Roast beef, lettuce, ..."}, 
+      {3, "Totally Tuna: It's tuna baby"}};
+    \end{lstlisting}
+  \subsection{Accessing Container Members}
+    \begin{lstlisting}
+      /*array name*/[/*index*/]
+      /*array name*/[/*index*/] = /*new value*/;
+
+      std::cout << user\_prompts[4];
+      x\_values[4] += 3.32;
+
+      /*vector name*/.push\_back(/*some new member, added to end*/);
+      // fake constructor for 'Student' class,  objects added to
+      // containers don't have to be named
+      students.push\_back(Student("Matthew", 8)); 
+
+      /*Map Name*/[/*new key*/] = /*new value*/;
+      MenuDescriptions[13] = "JIMMY CUBANO: Bacon, smoked ham...";
+   \end{lstlisting} 
+  \subsection{Template declarations}
+    \begin{lstlisting}
+      //add at top of functions to refer to inputs, etc
+      template <typename /*stand in name*/>;
+      template <typename /*...*/, typename /*...*/>;
+      template<typename T, typename S>
+      T minimum(T v1, S v2){
+        if(v1 - v2 < 0){
+          return v2;
+        } else {
+          return v1
+        }
+      }
+
+      //add at top of class defs to require a type on declaration
+      template<class holdType>
+      class FakeInt
+      {
+        public:
+          FakeInt(){
+          }
+          string type(){
+            return "I am an integer!";
+          }
+          int getValue(){
+            return fakeValue;
+          }
+        protected:
+          fakeValue = 9;
+        private:
+          holdType realValue;
+      };
+
+    \end{lstlisting}
+  \subsection{Reading from a file}
+    \begin{lstlisting}
+      /*I barely know how to do this, updates welcome*/
+      std::ifstream t;
+      int length;
+      t.open("path/to/file.txt");
+      length = t.tellg()
+      t.seekg(0, std::ios::end);
+      buffer = new char[length];
+      t.read(buffer, length)
+      t.close();
+    \end{lstlisting}
+  \subsection{Reading from a file}
+  \subsection{Special functions} %lambda, overwriting etc
+    \begin{lstlisting}
+      //a lambda function is basically an unnamed function
+      
+      // you can 'override' functions based on the parameters you define
+      // different functions with same name using different parameters, and
+      // the compiler decides what to use based on arguments
+      // often less efficient than templating or "optional" args
+      boolean even(int n){
+        return (n \% 2 == 0);
+      }
+      boolean even(double a){
+        return (((int) n) \% 2 == 0);
+      }
+      boolean even(int n, int divisor){
+        return (n \% divisor == 0);
+      }
+    \end{lstlisting}
+
+\section{Clark Galore}
+  \subsection{Setting up a Field}
+    coming soon!
+  \subsection{Setting up a Coordinate System}
+    coming soon!
+  \subsection{Range Discretizers}
+    coming soon!
+\section{Debugging}
+  \subsection{Common fixes}
+    \begin{itemize}
+      \item Have you tried adding a semicolon?
+      \item Did you (re)compile?
+      \item Are you compiling a .cpp file with a main method?
+      \item Did you declare everything you use?
+      \item Are you sure the computer is interpreting your math correctly?
+      \item PEMDAS?
+      \item Print out intermediate variables to make sure they are correct
+      \item Are you including ALL of the libraries you need?
+      \item Google it! No one really ever learns to code, they just get
+      better at using stack overflow
+    \end{itemize}
+  \subsection{Less common fixes}
+    \begin{itemize}
+      \item Are you sure you are respecting namespace? Are you correctly
+      \item referring to the variable you intend to? (Did you blow out a
+      value?)
+      \item Is it passing by reference or value?
+      \item Are you including a library one of your included libraries already
+    includes?
+      \item Are race conditions occuring?
+    \end{itemize}
+  \subsection{Uncommon fixes}
+    \begin{itemize}
+      \item Null pointer?
+      \item Are you trying to access unallocated memory?
+      \item Is there a namespace conflict?
+    \end{itemize}
+  \subsection{Last-Ditch-Effort fixes}
+    \begin{itemize}
+      \item Would garbage collection have occurred?
+      \item Double imprecision?
+      \item How's your prayer life?
+    \end{itemize}
+\end{document}
+
+
