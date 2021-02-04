@@ -15,7 +15,7 @@ double sum_squared(double x, double y){
 }
 
 int main(){
-	std::cout << "Hello, World!" << "\n";
+    	std::cout << "Hello, World!" << "\n";
       //Only uncomment all of this once you have compiled and ran the previous line. The law of machine demands it.
     
       //add these to top of file
