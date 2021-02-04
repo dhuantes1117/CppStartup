@@ -217,14 +217,14 @@
             return descriptions[menuID - 1];
           }
         protected:
-          boolean mayo = True;
-          boolean lettuce = True;
-          boolean tomato = True;
-          boolean peppers = False;
+          bool mayo = true;
+          bool lettuce = true;
+          bool tomato = true;
+          bool peppers = false;
         private:
           int menuID;
           string descriptions[] = {/*too lazy to actually type this*/};
-      }
+      };
     \end{lstlisting}
 \section{Even-more-less basic}
   \subsection{Container Declarations}
@@ -320,13 +320,13 @@
       // different functions with same name using different parameters, and
       // the compiler decides what to use based on arguments
       // often less efficient than templating or "optional" args
-      boolean even(int n){
+      bool even(int n){
         return (n \% 2 == 0);
       }
-      boolean even(double a){
+      bool even(double a){
         return (((int) n) \% 2 == 0);
       }
-      boolean even(int n, int divisor){
+      bool even(int n, int divisor){
         return (n \% divisor == 0);
       }
     \end{lstlisting}

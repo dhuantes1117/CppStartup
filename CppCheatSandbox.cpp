@@ -5,6 +5,7 @@
 #include <cmath>
 #include <chrono>
 #include <vector>
+#include "Sandwich.hpp"
 
 //this line is basically the import numpy as np of C++. Just always have it
 using namespace std;
