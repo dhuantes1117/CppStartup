@@ -73,6 +73,8 @@
       // strings
       std::string words = "blah blah blah";
       std::string more_words = "foo bar BAZ!"
+      // assumed type
+      auto something = 23;
     \end{lstlisting}
   \subsection{Common Functions}
     \begin{lstlisting}
@@ -84,6 +86,8 @@
       // to string
       float b = 1.21;
       std::string interp = std::to_string(b) + " look at that!\n";
+      // concatenation
+      std::string stringAddition = "Run " + "strings" + " together";
       // mathy stuff
       // these are non-native and are included in cmath
       // pow takes two arguments, x and y and returns x^y
@@ -280,23 +284,25 @@
       }
 
       //add at top of class defs to require a type on declaration
-      template<class holdType>
-      class FakeInt
-      {
+      template<class animalType>
+      class Pasture{
         public:
-          FakeInt(){
+          Pasture(){
+          
           }
-          string type(){
-            return "I am an integer!";
+          Pasture(std::vector<animalType> new_herd){
+            for(int i = 0; i < new_herd.size(); i++){
+              herd.push_back(new_herd[i]);
+            }
           }
-          int getValue(){
-            return fakeValue;
+          Pasture(animalType animal){
+            herd.push_back(animal);
           }
         protected:
-          fakeValue = 9;
+          int feedingtime = 500;
         private:
-          holdType realValue;
-      };
+          std::vector<animalType> herd;
+      }
 
     \end{lstlisting}
   \subsection{Reading from a file}
@@ -315,7 +321,11 @@
   \subsection{Special functions} %lambda, overwriting etc
     \begin{lstlisting}
       //a lambda function is basically an unnamed function
-      
+      // auto /*name*/ = [/*vars*/](/*param*/) -> /*ret type*/ {/*return*/};
+      auto Tinf = [](double t) -> double {return sqrt(t * 2)};
+      // We basically use lambda functions to use the set_f method on a field
+
+
       // you can 'override' functions based on the parameters you define
       // different functions with same name using different parameters, and
       // the compiler decides what to use based on arguments
@@ -333,11 +343,30 @@
 
 \section{Clark Galore}
   \subsection{Setting up a Field}
-    coming soon!
+    \begin{lstlisting}
+      Field</*some type*/, /*int for dimensions*/>/*Name*/(/*dimensions*/);
+      Field<double, 1> T_vs_t(100);
+
+      Field</*some type*/>/*Name*/(/*x dim*/, /*y dim*/);
+      Field<double> T_vs_t(10, 20);
+    \end{lstlisting}
   \subsection{Setting up a Coordinate System}
-    coming soon!
+    \begin{lstlisting}
+      Field</*some type*/, /*# of axes*/>/*Name*/(/*dimensions*/);
+      /*Field Name*/.setCoordinateSystem(/*RangeDiscretizer*/);
+      // we set the coordinate system using a custom type called a
+      // RangeDiscretizer which handles the problem of going from 
+      // i -> x and N
+
+      Field<double, 1> T_vs_t(100);
+      T_vs_t.setCoordinateSystem(Uniform<double>(0, 5));
+    \end{lstlisting}
   \subsection{Range Discretizers}
-    coming soon!
+    \begin{lstlisting}
+      Field</*some type*/, /*int for dimensions*/>/*Name*/(/*dimensions*/);
+
+      Field<double, 1> T_vs_t(100);
+    \end{lstlisting}
 \section{Debugging}
   \subsection{Common fixes}
     \begin{itemize}
